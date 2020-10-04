@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="MechanumDrive", group="Iterative Opmode")
+@TeleOp(name="MechanumDrive")
 
 public class MechanumDrive extends OpMode
 {
@@ -136,6 +136,7 @@ public class MechanumDrive extends OpMode
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+        telemetry.addData("Drive", "drive (%.2f), turn (%.2f)", drive, turn);
     }
 
     /*

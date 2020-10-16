@@ -29,7 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -51,9 +50,9 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="MechanumDrive")
+@TeleOp(name="TankDrive")
 
-public class MechanumDrive extends OpMode
+public class FourWheelTankDrive extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -79,10 +78,10 @@ public class MechanumDrive extends OpMode
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        frontLeft.setDirection(DcMotor.Direction.FORWARD);
-        frontRight.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.FORWARD);
-        backRight.setDirection(DcMotor.Direction.FORWARD);
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        frontRight.setDirection(DcMotor.Direction.FORWARD);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        backRight.setDirection(DcMotor.Direction.REVERSE);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -103,9 +102,8 @@ public class MechanumDrive extends OpMode
         runtime.reset();
     }
 
-
     /*
-    . * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
+     * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
     @Override
     public void loop() {
@@ -114,32 +112,22 @@ public class MechanumDrive extends OpMode
         double rightPower;
 
 
-        // Choose to drive using either Tank Mode, or POV Mode
-        // Comment out the method that's not used.  The default below is POV.
 
-        // POV Mode uses left stick to go forward, and right stick to turn.
-        // - This uses basic math to combine motions and is easier to drive straight.
-        double drive = -gamepad1.left_stick_y;
-        double turn  =  gamepad1.right_stick_x;
-        leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-        rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+        leftPower  = -gamepad1.left_stick_y ;
 
-        // Tank Mode uses one stick to control each wheel.
-        // - This requires no math, but it is hard to drive forward slowly and keep straight.
-        // leftPower  = -gamepad1.left_stick_y ;
-        // rightPower = -gamepad1.right_stick_y ;
+        rightPower  = -gamepad1.right_stick_y ;
+
 
         // Send calculated power to wheels
-        //frontLeft.setPower(leftPower);
-        //frontRight.setPower(rightPower);
-        //backLeft.setPower(leftPower);
-        //backRight.setPower(rightPower);
-        this.mecanumDrive_Cartesian(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+        frontLeft.setPower(leftPower);
+        frontRight.setPower(rightPower);
+        backLeft.setPower(leftPower);
+        backRight.setPower(rightPower);
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-        telemetry.addData("Drive", "drive (%.2f), turn (%.2f)", drive, turn);
+       // telemetry.addData("Drive", "drive (%.2f), turn (%.2f)", drive, turn);
     }
 
     /*
@@ -148,45 +136,5 @@ public class MechanumDrive extends OpMode
     @Override
     public void stop() {
     }
-
-    public void mecanumDrive_Cartesian(double x, double y, double rotation)
-    {
-        double wheelSpeeds[] = new double[4];
-
-        wheelSpeeds[0] = x + y + rotation;
-        wheelSpeeds[1] = -x + y - rotation;
-        wheelSpeeds[2] = -x + y + rotation;
-        wheelSpeeds[3] = x + y - rotation;
-
-        normalize(wheelSpeeds);
-
-        frontLeft.setPower(wheelSpeeds[0]);
-        frontRight.setPower(wheelSpeeds[1]);
-        backLeft.setPower(wheelSpeeds[2]);
-        backRight.setPower(wheelSpeeds[3]);
-    }   //mecanumDrive_Cartesian
-
-    private void normalize(double[] wheelSpeeds)
-    {
-        double maxMagnitude = Math.abs(wheelSpeeds[0]);
-
-        for (int i = 1; i < wheelSpeeds.length; i++)
-        {
-            double magnitude = Math.abs(wheelSpeeds[i]);
-
-            if (magnitude > maxMagnitude)
-            {
-                maxMagnitude = magnitude;
-            }
-        }
-
-        if (maxMagnitude > 1.0)
-        {
-            for (int i = 0; i < wheelSpeeds.length; i++)
-            {
-                wheelSpeeds[i] /= maxMagnitude;
-            }
-        }
-    }   //normalize
 
 }

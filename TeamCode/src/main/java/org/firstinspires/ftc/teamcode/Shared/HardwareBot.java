@@ -37,10 +37,10 @@ public class HardwareBot {
         hwMapRobot = ahwMap;
 
 // Define and Initialize Motors
-        DrivePos1 = hwMapRobot.dcMotor.get("drive1");
-        DrivePos2 = hwMapRobot.dcMotor.get("drive2");
-        DrivePos3 = hwMapRobot.dcMotor.get("drive3");
-        DrivePos4 = hwMapRobot.dcMotor.get("drive4");
+        DrivePos1 = hwMapRobot.dcMotor.get("backLeft");
+        DrivePos2 = hwMapRobot.dcMotor.get("backRight");
+        DrivePos3 = hwMapRobot.dcMotor.get("frontLeft");
+        DrivePos4 = hwMapRobot.dcMotor.get("frontRight");
 
 //Define Motor Directions
         DrivePos1.setDirection(DcMotor.Direction.REVERSE);

@@ -46,7 +46,7 @@ import org.firstinspires.ftc.teamcode.Shared.HardwareBot;
             double retValues [];
 
 //Instance of cartesianToPolar method used for changing the cartesian values into polar values.
-            retValues = cartesianToPolar(gamepad1.right_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x);
+            retValues = cartesianToPolar(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
 //Set retValues array to shown values. retValues is used to return the variables used in multiple methods.
             speed = retValues[0];
@@ -65,13 +65,16 @@ import org.firstinspires.ftc.teamcode.Shared.HardwareBot;
         public void stop() {
         }
 
-        public double[] cartesianToPolar(double y1, double x1, double x2) {
+        public double[] cartesianToPolar(double y1, double x1, double x2)
+        {
 
 //Reset retValues to 0 for later use
             double[] retValues = new double []{0.0,0.0,0.0};
+
             double speed = 0.0, angle=0.0, dchange=0.0;
 
 //Change joypad values into useful polar values
+
             speed = Math.sqrt((y1 * y1) + (x1 * x1));
             angle = Math.atan2(x1, -y1);
             dchange = -x2 / 3.33;

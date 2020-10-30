@@ -12,9 +12,9 @@ import org.firstinspires.ftc.teamcode.Shared.HardwareBot;
         HardwareBot robot = new HardwareBot();
 
         //Telemetry boolean (used to turn on any valid telemetry at the right time)
-        boolean joyPosTele = false;
-        boolean joyPolarCoordTele = false;
-        boolean wheelScalersTele = false;
+        boolean joyPosTele = true;
+        boolean joyPolarCoordTele = true;
+        boolean wheelScalersTele = true;
 
         //Code to run ONCE when the driver hits INIT
         @Override
@@ -24,7 +24,7 @@ import org.firstinspires.ftc.teamcode.Shared.HardwareBot;
             robot.init(hardwareMap);
 
 // Send telemetry message to signify robot waiting
-            telemetry.addData("Say", "Hello Driver");
+            telemetry.addData("Say", "Hell-O-Ween! Driver");
         }
 
         //Code to run REPEATEDLY after the driver hits INIT, but before they hit PLAY
@@ -46,7 +46,7 @@ import org.firstinspires.ftc.teamcode.Shared.HardwareBot;
             double retValues [];
 
 //Instance of cartesianToPolar method used for changing the cartesian values into polar values.
-            retValues = cartesianToPolar(gamepad1.right_stick_y, gamepad1.right_stick_x, gamepad1.left_stick_x);
+            retValues = cartesianToPolar(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
 //Set retValues array to shown values. retValues is used to return the variables used in multiple methods.
             speed = retValues[0];
@@ -65,7 +65,8 @@ import org.firstinspires.ftc.teamcode.Shared.HardwareBot;
         public void stop() {
         }
 
-        public double[] cartesianToPolar(double y1, double x1, double x2) {
+        public double[] cartesianToPolar(double y1, double x1, double turn)
+        {
 
 //Reset retValues to 0 for later use
             double[] retValues = new double []{0.0,0.0,0.0};
@@ -73,14 +74,14 @@ import org.firstinspires.ftc.teamcode.Shared.HardwareBot;
 
 //Change joypad values into useful polar values
             speed = Math.sqrt((y1 * y1) + (x1 * x1));
-            angle = Math.atan2(x1, -y1);
-            dchange = -x2 / 3.33;
+            angle = Math.atan2(-x1, y1);
+            dchange = turn;       //;/ 3.33;
 
 //Joypad input Telemetry
             if (joyPosTele) {
                 telemetry.addData("X1: ",x1);
                 telemetry.addData("Y1: ",y1);
-                telemetry.addData("X2: ",x2);
+                telemetry.addData("turn:",turn);
             }
 
 //Polar values Telemetry
@@ -103,10 +104,12 @@ import org.firstinspires.ftc.teamcode.Shared.HardwareBot;
             double pos1, pos2, pos3, pos4, maxValue;
 
 //Define unscaled voltage multipliers
-            pos1 = speed*Math.sin(angle+(Math.PI/4))+dchange;
-            pos2 = speed*Math.cos(angle+(Math.PI/4))-dchange;
-            pos3 = speed*Math.cos(angle+(Math.PI/4))+dchange;
-            pos4 = speed*Math.sin(angle+(Math.PI/4))-dchange;
+           // The front-right and back-left wheel should be set to sin(angle−1/4π) * magnitude.
+            // The front-left and back-right wheel should be set to sin(angle+1/4π) * magnitude.
+            pos1 = speed*Math.sin(angle+(Math.PI/4))+dchange; //Front Left
+            pos2 = speed*Math.sin(angle+(Math.PI/4))-dchange; //Front Right
+            pos3 = speed*Math.sin(angle+(Math.PI/4))+dchange; //Back Right
+            pos4 = speed*Math.sin(angle+(Math.PI/4))-dchange; // Back Left
 
 //VOLTAGE MULTIPLIER SCALER
 
@@ -126,10 +129,10 @@ import org.firstinspires.ftc.teamcode.Shared.HardwareBot;
             if (maxValue <= 1){ maxValue = 1;}
 
 //Power motors with scaled voltage multipliers
-            robot.DrivePos1.setPower(pos1/maxValue);
-            robot.DrivePos2.setPower(pos2/maxValue);
-            robot.DrivePos3.setPower(pos3/maxValue);
-            robot.DrivePos4.setPower(pos4/maxValue);
+            robot.FrontLeft.setPower(pos1/maxValue);
+            robot.FrontRight.setPower(pos2/maxValue);
+            robot.BackLeft.setPower(pos3/maxValue);
+            robot.BackRight.setPower(pos4/maxValue);
 
 //Scaled Voltage Multiplier Telemetry
             if (wheelScalersTele) {

@@ -18,10 +18,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  */
 public class HardwareBot {
     /* Public OpMode members. */
-    public DcMotor DrivePos1 = null;
-    public DcMotor DrivePos2 = null;
-    public DcMotor DrivePos3 = null;
-    public DcMotor DrivePos4 = null;
+    public DcMotor FrontLeft = null;
+    public DcMotor FrontRight = null;
+    public DcMotor BackLeft = null;
+    public DcMotor BackRight = null;
 
     /* Local OpMode members. */
     HardwareMap hwMapRobot = null;
@@ -29,7 +29,6 @@ public class HardwareBot {
     /* Constructor */
     public HardwareBot() {
     }
-
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
 
@@ -37,29 +36,30 @@ public class HardwareBot {
         hwMapRobot = ahwMap;
 
 // Define and Initialize Motors
-        DrivePos1 = hwMapRobot.dcMotor.get("backLeft");
-        DrivePos2 = hwMapRobot.dcMotor.get("backRight");
-        DrivePos3 = hwMapRobot.dcMotor.get("frontLeft");
-        DrivePos4 = hwMapRobot.dcMotor.get("frontRight");
+       
+        FrontLeft = hwMapRobot.dcMotor.get("frontLeft");
+        FrontRight = hwMapRobot.dcMotor.get("frontRight");
+        BackLeft = hwMapRobot.dcMotor.get("backLeft");
+        BackRight = hwMapRobot.dcMotor.get("backRight");
 
 //Define Motor Directions
-        DrivePos1.setDirection(DcMotor.Direction.REVERSE);
-        DrivePos2.setDirection(DcMotor.Direction.FORWARD);
-        DrivePos3.setDirection(DcMotor.Direction.REVERSE);
-        DrivePos4.setDirection(DcMotor.Direction.FORWARD);
+        FrontLeft.setDirection(DcMotor.Direction.FORWARD);
+        FrontRight.setDirection(DcMotor.Direction.REVERSE);
+        BackLeft.setDirection(DcMotor.Direction.FORWARD);
+        BackRight.setDirection(DcMotor.Direction.REVERSE);
 
 // Set all motors to zero power
-        DrivePos1.setPower(0);
-        DrivePos2.setPower(0);
-        DrivePos3.setPower(0);
-        DrivePos4.setPower(0);
+        FrontLeft.setPower(0);
+        FrontRight.setPower(0);
+        BackLeft.setPower(0);
+        BackRight.setPower(0);
 
 // Set all motors to run with encoders.
 // May want to use RUN_USING_ENCODER if encoders are installed.
-        DrivePos1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS );
-        DrivePos2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS );
-        DrivePos3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS );
-        DrivePos4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS );
+        FrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS );
+        FrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS );
+        BackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS );
+        BackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS );
 
     }
 }

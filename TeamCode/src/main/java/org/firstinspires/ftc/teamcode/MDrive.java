@@ -2,6 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.Shared.HardwareBot;
 
 @TeleOp(name="MDrive: TeleOP", group="Test")
@@ -15,8 +19,9 @@ import org.firstinspires.ftc.teamcode.Shared.HardwareBot;
         boolean joyPosTele = true;
         boolean joyPolarCoordTele = true;
         boolean wheelScalersTele = true;
-
-        //Code to run ONCE when the driver hits INIT
+        boolean leftBumper=false;
+        boolean rightBumper=false;
+    //Code to run ONCE when the driver hits INIT
         @Override
         public void init() {
 
@@ -40,6 +45,7 @@ import org.firstinspires.ftc.teamcode.Shared.HardwareBot;
 
             Drive();
             Shoot();
+            Intake();
 
 //Update the Telemetry
             telemetry.update();
@@ -70,24 +76,34 @@ import org.firstinspires.ftc.teamcode.Shared.HardwareBot;
 
             telemetry.addData("Speed: ", v1);
             telemetry.update();
+            robot.lastAngles= robot.gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            telemetry.addData("1 imu heading", robot.lastAngles.firstAngle);
 
+            telemetry.update();
         }
     public void Shoot()
     {
 
         double leftTriggerSpeed =gamepad1.left_trigger;
-        double rightTriggerSpeed = -1*gamepad1.right_trigger;
 
-        robot.ShooterLeft.setPower(limit(leftTriggerSpeed));
-        robot.ShooterLeft.setPower(limit(rightTriggerSpeed));
+        robot.Shooter.setPower(limit(leftTriggerSpeed));
 
-        telemetry.addData("Speed: ", leftTriggerSpeed);
-        telemetry.addData("Speed: ", rightTriggerSpeed);
-        telemetry.update();
+
+
 
     }
+   public void Intake() {
 
+       leftBumper = gamepad1.left_bumper;
+       rightBumper = gamepad1.right_bumper;
+
+       if (rightBumper) {
+           robot.IntakeTwo.setPower(100);
+       }
+       if (leftBumper) {
+           robot.IntakeTwo.setPower(0);
+       }
+
+
+   }
 }
-
-
-

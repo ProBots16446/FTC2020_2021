@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.Shared;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 /**
  * This is NOT an opmode.
@@ -22,9 +25,11 @@ public class HardwareBot {
     public DcMotor FrontRight = null;
     public DcMotor BackLeft = null;
     public DcMotor BackRight = null;
-    public DcMotor ShooterLeft = null;
-    public DcMotor ShooterRight = null;
-
+    public DcMotor Shooter = null;
+    public DcMotor IntakeTwo = null;
+    public BNO055IMU gyro = null;
+    BNO055IMU imu;
+    public Orientation lastAngles = new Orientation();
     /* Local OpMode members. */
     HardwareMap hwMapRobot = null;
 
@@ -38,35 +43,53 @@ public class HardwareBot {
         hwMapRobot = ahwMap;
 
 // Define and Initialize Motors
-       
+
+
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+
+        parameters.mode                = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled      = false;
+
         FrontLeft = hwMapRobot.dcMotor.get("frontLeft");
         FrontRight = hwMapRobot.dcMotor.get("frontRight");
         BackLeft = hwMapRobot.dcMotor.get("backLeft");
         BackRight = hwMapRobot.dcMotor.get("backRight");
-        ShooterLeft = hwMapRobot.dcMotor.get("shooterLeft");
-        ShooterRight = hwMapRobot.dcMotor.get("shooterRight");
+        Shooter = hwMapRobot.dcMotor.get("shooter");
+        IntakeTwo = hwMapRobot.dcMotor.get("intakeTwo");
+        try {
+            gyro = hwMapRobot.get(BNO055IMU.class, "gyro");
+            gyro.initialize(parameters);
+
+        }
+        catch (Exception ex)
+        {
+        }
+
+
 //Define Motor Directions
-        FrontLeft.setDirection(DcMotor.Direction.FORWARD);
-        FrontRight.setDirection(DcMotor.Direction.REVERSE);
-        BackLeft.setDirection(DcMotor.Direction.FORWARD);
-        BackRight.setDirection(DcMotor.Direction.FORWARD);
-        ShooterLeft.setDirection(DcMotor.Direction.FORWARD);
-        ShooterRight.setDirection(DcMotor.Direction.FORWARD);
+        FrontLeft.setDirection(DcMotor.Direction.REVERSE);
+        FrontRight.setDirection(DcMotor.Direction.FORWARD);
+        BackLeft.setDirection(DcMotor.Direction.REVERSE);
+        BackRight.setDirection(DcMotor.Direction.REVERSE);
+        Shooter.setDirection(DcMotor.Direction.FORWARD);
+
 // Set all motors to zero power
         FrontLeft.setPower(0);
         FrontRight.setPower(0);
         BackLeft.setPower(0);
         BackRight.setPower(0);
-        ShooterLeft.setPower(0);
-        ShooterRight.setPower(0);
+        Shooter.setPower(0);
+
 // Set all motors to run with encoders.
 // May want to use RUN_USING_ENCODER if encoders are installed.
         FrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS );
         FrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS );
         BackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS );
         BackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS );
-        ShooterLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS );
-        ShooterRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS );
+        Shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS );
+
 
     }
 }

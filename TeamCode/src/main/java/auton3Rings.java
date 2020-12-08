@@ -66,7 +66,7 @@ public class auton3Rings extends LinearOpMode
                 //todo add determine speed method
                 float dif = angle-gyro;
                 // make bigger adjustment the bigger the dif.
-                
+
                 drive(speed, speed-10);
             }
 

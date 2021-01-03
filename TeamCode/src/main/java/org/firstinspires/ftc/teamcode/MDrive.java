@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -61,8 +60,8 @@ import org.firstinspires.ftc.teamcode.Shared.HardwareBot;
         public void Drive()
         {
             double multipliar=1.25;
-            double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
-            double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x) - Math.PI / 4;
+            double r = Math.hypot(gamepad1.left_stick_x*-1, gamepad1.left_stick_y*-1);
+            double robotAngle = Math.atan2(gamepad1.left_stick_y*-1, gamepad1.left_stick_x) - Math.PI / 4;
             double rightX = gamepad1.right_stick_x;
             final double v1 = (r * Math.cos(robotAngle) - rightX)*multipliar;
             final double v2 = (r * Math.sin(robotAngle) + rightX)*multipliar;
@@ -76,8 +75,8 @@ import org.firstinspires.ftc.teamcode.Shared.HardwareBot;
 
             telemetry.addData("Speed: ", v1);
             telemetry.update();
-            robot.lastAngles= robot.gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            telemetry.addData("1 imu heading", robot.lastAngles.firstAngle);
+           // robot.lastAngles= robot.gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+           // telemetry.addData("1 imu heading", robot.lastAngles.firstAngle);
 
             telemetry.update();
         }

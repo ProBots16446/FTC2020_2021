@@ -53,7 +53,7 @@ public class DriveForward extends LinearOpMode
         BackRight.setPower(1);
         BackLeft.setPower(1);
 
-        sleep(2000);        // wait for 2 seconds.
+        sleep(1500);        // wait for 2 seconds.
 
         // set motor power to zero to stop motors.
 
